@@ -11,6 +11,7 @@ services:
           - "/srv/overleaf/data:/var/lib/sharelatex"
       environment:
         SHARELATEX_REDIS_HOST: "${REDIS_HOST}"
+        EMAIL_CONFIRMATION_DISABLED: true
         V1_HISTORY_URL: "http://sharelatex:3100/api"
       labels:
         # activate traefik
