@@ -77,8 +77,8 @@ services:
         - overleaf
 
 volumes:
-  - mongo
-  - redis
+  mongo:
+  redis:
 
 networks:
   overleaf:
