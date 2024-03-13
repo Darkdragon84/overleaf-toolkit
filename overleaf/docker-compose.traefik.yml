@@ -2,7 +2,6 @@ version: '3.3'
 services:
     sharelatex:
       restart: unless-stopped
-      stop_grace_period: 60s
       image: sharelatex/sharelatex:4.2.3
       container_name: sharelatex
       env_file:
