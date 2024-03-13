@@ -38,13 +38,13 @@ services:
         - traefik.http.routers.sharelatex-https.service=sharelatex
         - traefik.http.services.sharelatex.loadbalancer.server.port=80
       depends_on:
-        - sharelatex-mongo
-        - sharelatex-redis
+        - mongo
+        - redis
       networks:
         - overleaf
         - traefik-public
 
-    sharelatex-mongo:
+    mongo:
       image: mongo:5.0
       container_name: sharelatex-mongo
       restart: unless-stopped
@@ -63,7 +63,7 @@ services:
       networks:
         - overleaf
 
-    sharelatex-redis:
+    redis:
       image: redis:6.2
       container_name: sharelatex-redis
       restart: unless-stopped
