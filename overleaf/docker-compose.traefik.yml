@@ -7,12 +7,24 @@ services:
       env_file:
         - ./.env
       volumes:
-          - "/srv/overleaf/data:/var/lib/sharelatex"
+        - /srv/overleaf/data:/var/lib/sharelatex
       environment:
+        SHARELATEX_SECURE_COOKIE: true
+        SHARELATEX_BEHIND_PROXY: true
+        SHARELATEX_EMAIL_SMTP_HOST: protonmail-bridge
+        SHARELATEX_EMAIL_SMTP_PORT: 25
+        SHARELATEX_EMAIL_SMTP_SECURE: true
         SHARELATEX_REDIS_HOST: "${REDIS_HOST}"
         SHARELATEX_REDIS_PORT: "${REDIS_PORT}"
         SHARELATEX_SITE_URL: "https://${OVERLEAF_DOMAIN}"
+        # service "mongo" is the MongoDB host
+        SHARELATEX_MONGO_URL: mongodb://mongo/sharelatex
+        # service "redis" is the Redics Cache host
+        REDIS_HOST: redis
+        REDIS_PORT: 6379
         V1_HISTORY_URL: "http://sharelatex:3100/api"
+        # server pro settings
+        GIT_BRIDGE_ENABLED: false
       labels:
         # activate traefik
         - traefik.enable=true
@@ -44,6 +56,7 @@ services:
       networks:
         - overleaf
         - traefik-public
+        - protonmail-bridge
 
     mongo:
       image: mongo:5.0
@@ -83,4 +96,6 @@ networks:
   overleaf:
     driver: bridge
   traefik-public:
+    external: true
+  protonmail-bridge:
     external: true
