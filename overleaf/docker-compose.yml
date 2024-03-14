@@ -11,16 +11,16 @@ services:
       environment:
         SHARELATEX_SECURE_COOKIE: "true"
         SHARELATEX_BEHIND_PROXY: "true"
-        SHARELATEX_EMAIL_SMTP_HOST: protonmail-bridge
+        SHARELATEX_EMAIL_SMTP_HOST: "protonmail-bridge"
         SHARELATEX_EMAIL_SMTP_PORT: 25
-        SHARELATEX_EMAIL_SMTP_SECURE: true
+        SHARELATEX_EMAIL_SMTP_SECURE: "true"
         SHARELATEX_SITE_URL: "https://${OVERLEAF_DOMAIN}"
         # service "mongo" is the MongoDB host
-        SHARELATEX_MONGO_URL: mongodb://mongo/sharelatex
+        SHARELATEX_MONGO_URL: "mongodb://mongo/sharelatex"
         # service "redis" is the Redics Cache host
-        REDIS_HOST: redis
+        REDIS_HOST: "redis"
         REDIS_PORT: 6379
-        SHARELATEX_REDIS_HOST: redis
+        SHARELATEX_REDIS_HOST: "redis"
         SHARELATEX_REDIS_PORT: 6379
         V1_HISTORY_URL: "http://sharelatex:3100/api"
         # server pro settings
