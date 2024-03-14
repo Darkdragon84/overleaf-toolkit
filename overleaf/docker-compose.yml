@@ -9,8 +9,8 @@ services:
       volumes:
         - /srv/overleaf/data:/var/lib/sharelatex
       environment:
-        SHARELATEX_SECURE_COOKIE: true
-        SHARELATEX_BEHIND_PROXY: true
+        SHARELATEX_SECURE_COOKIE: "true"
+        SHARELATEX_BEHIND_PROXY: "true"
         SHARELATEX_EMAIL_SMTP_HOST: protonmail-bridge
         SHARELATEX_EMAIL_SMTP_PORT: 25
         SHARELATEX_EMAIL_SMTP_SECURE: true
@@ -24,7 +24,7 @@ services:
         SHARELATEX_REDIS_PORT: 6379
         V1_HISTORY_URL: "http://sharelatex:3100/api"
         # server pro settings
-        GIT_BRIDGE_ENABLED: false
+        GIT_BRIDGE_ENABLED: "false"
       labels:
         # activate traefik
         - traefik.enable=true
@@ -56,7 +56,7 @@ services:
       networks:
         - overleaf
         - traefik-public
-        - protonmail-bridge
+        - protonmail-network
 
     mongo:
       image: mongo:5.0
@@ -97,5 +97,5 @@ networks:
     driver: bridge
   traefik-public:
     external: true
-  protonmail-bridge:
+  protonmail-network:
     external: true
