@@ -8,13 +8,22 @@ services:
         - ./.env
       volumes:
         - /srv/overleaf/data:/var/lib/sharelatex
-      environment:
+      environment:        
+        SHARELATEX_SITE_URL: "https://${OVERLEAF_DOMAIN}"
         SHARELATEX_SECURE_COOKIE: "true"
         SHARELATEX_BEHIND_PROXY: "true"
+        # Email settings
         SHARELATEX_EMAIL_SMTP_HOST: "protonmail-bridge"
         SHARELATEX_EMAIL_SMTP_PORT: 25
-        SHARELATEX_EMAIL_SMTP_SECURE: "true"
-        SHARELATEX_SITE_URL: "https://${OVERLEAF_DOMAIN}"
+        # https://nodemailer.com/smtp/#tls-options
+        # causes to use STARTTLS if available
+        SHARELATEX_EMAIL_SMTP_SECURE: "false"
+        # allows self-signed certificates
+        SHARELATEX_EMAIL_SMTP_TLS_REJECT_UNAUTH: "false"
+        # allows using STARTTLS if available
+        SHARELATEX_EMAIL_SMTP_IGNORE_TLS: "false"
+        # logs to /var/log/sharelatex/web.log
+        SHARELATEX_EMAIL_SMTP_LOGGER: "true"
         # service "mongo" is the MongoDB host
         SHARELATEX_MONGO_URL: "mongodb://mongo/sharelatex"
         # service "redis" is the Redics Cache host
@@ -25,6 +34,7 @@ services:
         V1_HISTORY_URL: "http://sharelatex:3100/api"
         # server pro settings
         GIT_BRIDGE_ENABLED: "false"
+
       labels:
         # activate traefik
         - traefik.enable=true
