@@ -9,28 +9,28 @@ services:
       volumes:
         - /srv/overleaf/data:/var/lib/sharelatex
       environment:        
-        OVERLEAF_SITE_URL: "https://${OVERLEAF_DOMAIN}"
-        OVERLEAF_SECURE_COOKIE: "true"
-        OVERLEAF_BEHIND_PROXY: "true"
+        SHARELATEX_SITE_URL: "https://${OVERLEAF_DOMAIN}"
+        SHARELATEX_SECURE_COOKIE: "true"
+        SHARELATEX_BEHIND_PROXY: "true"
         # Email settings
-        OVERLEAF_EMAIL_SMTP_HOST: "protonmail-bridge"
-        OVERLEAF_EMAIL_SMTP_PORT: 25
+        SHARELATEX_EMAIL_SMTP_HOST: "protonmail-bridge"
+        SHARELATEX_EMAIL_SMTP_PORT: 25
         # https://nodemailer.com/smtp/#tls-options
         # causes to use STARTTLS if available
-        OVERLEAF_EMAIL_SMTP_SECURE: "false"
+        SHARELATEX_EMAIL_SMTP_SECURE: "false"
         # allows self-signed certificates
-        OVERLEAF_EMAIL_SMTP_TLS_REJECT_UNAUTH: "false"
+        SHARELATEX_EMAIL_SMTP_TLS_REJECT_UNAUTH: "false"
         # allows using STARTTLS if available
-        OVERLEAF_EMAIL_SMTP_IGNORE_TLS: "false"
+        SHARELATEX_EMAIL_SMTP_IGNORE_TLS: "false"
         # logs to /var/log/sharelatex/web.log
-        OVERLEAF_EMAIL_SMTP_LOGGER: "true"
+        SHARELATEX_EMAIL_SMTP_LOGGER: "true"
         # service "mongo" is the MongoDB host
-        OVERLEAF_MONGO_URL: "mongodb://mongo/sharelatex"
+        SHARELATEX_MONGO_URL: "mongodb://mongo/sharelatex"
         # service "redis" is the Redics Cache host
         REDIS_HOST: "redis"
         REDIS_PORT: 6379
-        OVERLEAF_REDIS_HOST: "redis"
-        OVERLEAF_REDIS_PORT: 6379
+        SHARELATEX_REDIS_HOST: "redis"
+        SHARELATEX_REDIS_PORT: 6379
         V1_HISTORY_URL: "http://sharelatex:3100/api"
         # server pro settings
         GIT_BRIDGE_ENABLED: "false"
