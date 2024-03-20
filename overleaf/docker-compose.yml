@@ -1,37 +1,37 @@
 version: '3.3'
 services:
-    sharelatex:
+    overleaf:
       restart: unless-stopped
-      image: sharelatex/sharelatex:4.2.3
-      container_name: sharelatex
+      image: sharelatex/sharelatex:latest
+      container_name: overleaf
       env_file:
         - ./.env
       volumes:
-        - /srv/overleaf/data:/var/lib/sharelatex
+        - /srv/overleaf/data:/var/lib/overleaf
       environment:        
-        SHARELATEX_SITE_URL: "https://${OVERLEAF_DOMAIN}"
-        SHARELATEX_SECURE_COOKIE: "true"
-        SHARELATEX_BEHIND_PROXY: "true"
+        OVERLEAF_SITE_URL: "https://${OVERLEAF_DOMAIN}"
+        OVERLEAF_SECURE_COOKIE: "true"
+        OVERLEAF_BEHIND_PROXY: "true"
         # Email settings
-        SHARELATEX_EMAIL_SMTP_HOST: "protonmail-bridge"
-        SHARELATEX_EMAIL_SMTP_PORT: 25
+        OVERLEAF_EMAIL_SMTP_HOST: "protonmail-bridge"
+        OVERLEAF_EMAIL_SMTP_PORT: 25
         # https://nodemailer.com/smtp/#tls-options
         # causes to use STARTTLS if available
-        SHARELATEX_EMAIL_SMTP_SECURE: "false"
+        OVERLEAF_EMAIL_SMTP_SECURE: "false"
         # allows self-signed certificates
-        SHARELATEX_EMAIL_SMTP_TLS_REJECT_UNAUTH: "false"
+        OVERLEAF_EMAIL_SMTP_TLS_REJECT_UNAUTH: "false"
         # allows using STARTTLS if available
-        SHARELATEX_EMAIL_SMTP_IGNORE_TLS: "false"
-        # logs to /var/log/sharelatex/web.log
-        SHARELATEX_EMAIL_SMTP_LOGGER: "true"
+        OVERLEAF_EMAIL_SMTP_IGNORE_TLS: "false"
+        # logs to /var/log/overleaf/web.log
+        OVERLEAF_EMAIL_SMTP_LOGGER: "true"
         # service "mongo" is the MongoDB host
-        SHARELATEX_MONGO_URL: "mongodb://mongo/sharelatex"
+        OVERLEAF_MONGO_URL: "mongodb://mongo/overleaf"
         # service "redis" is the Redics Cache host
         REDIS_HOST: "redis"
         REDIS_PORT: 6379
-        SHARELATEX_REDIS_HOST: "redis"
-        SHARELATEX_REDIS_PORT: 6379
-        V1_HISTORY_URL: "http://sharelatex:3100/api"
+        OVERLEAF_REDIS_HOST: "redis"
+        OVERLEAF_REDIS_PORT: 6379
+        V1_HISTORY_URL: "http://overleaf:3100/api"
         # server pro settings
         GIT_BRIDGE_ENABLED: "false"
 
@@ -40,26 +40,26 @@ services:
         - traefik.enable=true
         - traefik.docker.network=traefik-public
         - traefik.constraint-label=traefik-public
-        - traefik.http.middlewares.sharelatex-https-redirect.redirectscheme.scheme=https
+        - traefik.http.middlewares.overleaf-https-redirect.redirectscheme.scheme=https
         # do we need to activate this middleware?
-        - traefik.http.middlewares.sharelatex-header.headers.referrerPolicy=no-referrer
-        - traefik.http.middlewares.sharelatex-header.headers.stsSeconds=15552000
-        - traefik.http.middlewares.sharelatex-header.headers.forceSTSHeader=true
-        - traefik.http.middlewares.sharelatex-header.headers.stsPreload=true
-        - traefik.http.middlewares.sharelatex-header.headers.stsIncludeSubdomains=true
-        - traefik.http.middlewares.sharelatex-header.headers.browserXssFilter=true
-        - traefik.http.middlewares.sharelatex-header.headers.customRequestHeaders.X-Forwarded-Proto=https
+        - traefik.http.middlewares.overleaf-header.headers.referrerPolicy=no-referrer
+        - traefik.http.middlewares.overleaf-header.headers.stsSeconds=15552000
+        - traefik.http.middlewares.overleaf-header.headers.forceSTSHeader=true
+        - traefik.http.middlewares.overleaf-header.headers.stsPreload=true
+        - traefik.http.middlewares.overleaf-header.headers.stsIncludeSubdomains=true
+        - traefik.http.middlewares.overleaf-header.headers.browserXssFilter=true
+        - traefik.http.middlewares.overleaf-header.headers.customRequestHeaders.X-Forwarded-Proto=https
 
-        - traefik.http.routers.sharelatex.entrypoints=http
-        - traefik.http.routers.sharelatex.rule=Host(`${OVERLEAF_DOMAIN}`)
-        - traefik.http.routers.sharelatex.middlewares=sharelatex-https-redirect
+        - traefik.http.routers.overleaf.entrypoints=http
+        - traefik.http.routers.overleaf.rule=Host(`${OVERLEAF_DOMAIN}`)
+        - traefik.http.routers.overleaf.middlewares=overleaf-https-redirect
         
-        - traefik.http.routers.sharelatex-https.rule=Host(`${OVERLEAF_DOMAIN}`)
-        - traefik.http.routers.sharelatex-https.entrypoints=https
-        - traefik.http.routers.sharelatex-https.tls=true
-        - traefik.http.routers.sharelatex-https.tls.certresolver=le
-        - traefik.http.routers.sharelatex-https.service=sharelatex
-        - traefik.http.services.sharelatex.loadbalancer.server.port=80
+        - traefik.http.routers.overleaf-https.rule=Host(`${OVERLEAF_DOMAIN}`)
+        - traefik.http.routers.overleaf-https.entrypoints=https
+        - traefik.http.routers.overleaf-https.tls=true
+        - traefik.http.routers.overleaf-https.tls.certresolver=le
+        - traefik.http.routers.overleaf-https.service=overleaf
+        - traefik.http.services.overleaf.loadbalancer.server.port=80
       depends_on:
         - mongo
         - redis
@@ -70,7 +70,7 @@ services:
 
     mongo:
       image: mongo:5.0
-      container_name: sharelatex-mongo
+      container_name: overleaf-mongo
       restart: unless-stopped
       command: --replSet overleaf
       env_file:
@@ -89,7 +89,7 @@ services:
 
     redis:
       image: redis:6.2
-      container_name: sharelatex-redis
+      container_name: overleaf-redis
       restart: unless-stopped
       env_file:
         - ./.env
